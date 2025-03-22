@@ -1,16 +1,71 @@
-# camera_app
+Тестовое задание: Flutter Developer
+Описание
+Это тестовое задание демонстрирует мою способность к разработке с использованием Flutter и архитектурных принципов, таких как Clean Architecture. В проекте реализовано несколько ключевых функций:
 
-A new Flutter project.
+Съемка фотографий.
 
-## Getting Started
+Запись видео.
 
-This project is a starting point for a Flutter application.
+Сохранение медиафайлов (фото и видео).
 
-A few resources to get you started if this is your first Flutter project:
+Применение чистой архитектуры для разделения ответственности и улучшения тестируемости.
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+Проект использует слои:
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Core: Общие утилиты и платформенные каналы для взаимодействия с Android и iOS.
+
+Data: Репозитории и источники данных для работы с медиа.
+
+Domain: Бизнес-логика и use-cases.
+
+Presentation: Интерфейс пользователя, включая страницы и виджеты.
+
+Применяемые технологии:
+Flutter и Dart.
+
+BLoC для управления состоянием.
+
+Clean Architecture для разделения слоёв и соблюдения принципов SOLID.
+
+Image Picker и Camera Plugin для работы с медиа.
+
+Задачи, решённые в проекте:
+Интеграция камеры для захвата фото и видео.
+
+Логика записи видео с возможностью сохранения.
+
+Реализация управления разрешениями на платформе.
+
+Использование архитектуры BLoC для управления состоянием и обработкой событий.
+
+Как запустить:
+Клонируйте репозиторий:
+
+bash
+Копировать
+Редактировать
+git clone https://github.com/your_username/camera_app.git
+Перейдите в директорию проекта:
+
+bash
+Копировать
+Редактировать
+cd camera_app
+Установите зависимости:
+
+bash
+Копировать
+Редактировать
+flutter pub get
+Запустите проект:
+
+bash
+Копировать
+Редактировать
+flutter run
+Примечания:
+Последняя фиксация: Данный проект является финальной версией тестового задания.
+
+Блокировка улучшений: Все текущие задачи завершены, функционал работает согласно заявленным требованиям.
+
+Желаю удачи тем, кто будет просматривать проект! Благодарю за внимание!
