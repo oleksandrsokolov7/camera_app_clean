@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:camera/camera.dart';
+import 'package:camera_app/domain/entities/captured_media.dart';
 import 'package:camera_app/presentation/widgets/control_buttons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -18,7 +19,6 @@ class CameraScreen extends StatelessWidget {
     });
 
     return Scaffold(
-      // остальной код...Scaffold(
       appBar: AppBar(title: const Text("Camera Screen")),
       body: BlocConsumer<CameraBloc, CameraState>(
         listener: (context, state) {
@@ -31,6 +31,99 @@ class CameraScreen extends StatelessWidget {
         builder: (context, state) {
           if (state is CameraLoadingState) {
             return const Center(child: CircularProgressIndicator());
+          } else if (state is MediaCapturedState) {
+            return Stack(
+              children: [
+                // Показать превью изображения или видео
+                Positioned.fill(
+                  child:
+                      state.media.type == MediaType.photo
+                          ? Image.file(state.media.file, fit: BoxFit.cover)
+                          : Center(
+                            child: Text("Видео записано: ${state.media.path}"),
+                          ),
+                ),
+
+                // Кнопки действий
+                Positioned(
+                  bottom: 60,
+                  left: 0,
+                  right: 0,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      // Кнопка возврата к камере
+                      FloatingActionButton(
+                        onPressed: () {
+                          context.read<CameraBloc>().add(InitCameraEvent());
+                        },
+                        heroTag: 'back',
+                        child: const Icon(Icons.arrow_back),
+                      ),
+
+                      // Кнопка сохранения
+                      FloatingActionButton(
+                        onPressed: () {
+                          context.read<CameraBloc>().add(
+                            SaveMediaEvent(media: state.media),
+                          );
+                        },
+                        heroTag: 'save',
+                        backgroundColor: Colors.green,
+                        child: const Icon(Icons.save),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            );
+          } else if (state is MediaSavedState) {
+            return Stack(
+              children: [
+                Positioned.fill(
+                  child:
+                      state.media.type == MediaType.photo
+                          ? Image.file(state.media.file, fit: BoxFit.cover)
+                          : Center(
+                            child: Text("Видео сохранено: ${state.media.path}"),
+                          ),
+                ),
+                const Positioned(
+                  top: 100,
+                  left: 0,
+                  right: 0,
+                  child: Center(
+                    child: Card(
+                      color: Colors.green,
+                      child: Padding(
+                        padding: EdgeInsets.all(16.0),
+                        child: Text(
+                          "Медиафайл успешно сохранен!",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                Positioned(
+                  bottom: 60,
+                  left: 0,
+                  right: 0,
+                  child: Center(
+                    child: FloatingActionButton(
+                      onPressed: () {
+                        context.read<CameraBloc>().add(InitCameraEvent());
+                      },
+                      heroTag: 'back_to_camera',
+                      child: const Icon(Icons.camera),
+                    ),
+                  ),
+                ),
+              ],
+            );
           } else if (state is CameraErrorState) {
             return Center(
               child: Text(

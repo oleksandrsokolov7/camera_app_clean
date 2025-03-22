@@ -21,6 +21,7 @@ import 'package:camera_app/presentation/bloc/camera_bloc.dart';
 
 // Core utils
 import 'package:camera_app/core/utils/permission_handler.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 void main() async {
   // Ensure Flutter is initialized
@@ -31,6 +32,12 @@ void main() async {
   if (!hasPermissions) {
     // Handle permission denied case if needed
     print("Camera permissions not granted!");
+  }
+
+  // Добавьте запрос на разрешение записи в галерею
+  final storageStatus = await Permission.storage.request();
+  if (storageStatus.isDenied) {
+    print("Необходимо разрешение на доступ к галерее");
   }
 
   runApp(const MyApp());

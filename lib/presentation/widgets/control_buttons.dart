@@ -1,20 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import '../bloc/camera_bloc.dart';
-import '../bloc/camera_event.dart';
 
 class ControlButtons extends StatelessWidget {
+  final bool isRecording;
+  final VoidCallback onTakePicture;
+  final VoidCallback onSwitchCamera;
+  final VoidCallback onPickOverlay;
+  final VoidCallback onStartRecording;
+  final VoidCallback onStopRecording;
+
   const ControlButtons({
     super.key,
     required this.isRecording,
-    required Null Function() onTakePicture, // Не используются!
-    required Null Function() onSwitchCamera,
-    required Null Function() onPickOverlay,
-    required Null Function() onStartRecording,
-    required Null Function() onStopRecording,
+    required this.onTakePicture,
+    required this.onSwitchCamera,
+    required this.onPickOverlay,
+    required this.onStartRecording,
+    required this.onStopRecording,
   });
-
-  final bool isRecording;
 
   @override
   Widget build(BuildContext context) {
@@ -26,35 +28,23 @@ class ControlButtons extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           FloatingActionButton(
-            onPressed: () {
-              context.read<CameraBloc>().add(SwitchCameraEvent());
-            },
+            onPressed: onSwitchCamera,
             heroTag: 'switch',
             child: const Icon(Icons.switch_camera),
           ),
           FloatingActionButton(
-            onPressed: () {
-              context.read<CameraBloc>().add(TakePictureEvent());
-            },
+            onPressed: onTakePicture,
             heroTag: 'photo',
             child: const Icon(Icons.camera),
           ),
           FloatingActionButton(
-            onPressed: () {
-              if (isRecording) {
-                context.read<CameraBloc>().add(StopVideoRecordingEvent());
-              } else {
-                context.read<CameraBloc>().add(StartVideoRecordingEvent());
-              }
-            },
+            onPressed: isRecording ? onStopRecording : onStartRecording,
             backgroundColor: isRecording ? Colors.red : Colors.blue,
             heroTag: 'video',
             child: Icon(isRecording ? Icons.stop : Icons.videocam),
           ),
           FloatingActionButton(
-            onPressed: () {
-              context.read<CameraBloc>().add(PickOverlayImageEvent());
-            },
+            onPressed: onPickOverlay,
             heroTag: 'overlay',
             child: const Icon(Icons.image),
           ),
