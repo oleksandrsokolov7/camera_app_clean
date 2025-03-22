@@ -134,14 +134,18 @@ class CameraScreen extends StatelessWidget {
           } else if (state is CameraReadyState) {
             return Stack(
               children: [
-                // Camera preview or other UI components related to camera
+                // Камера в виде превью
                 Positioned.fill(child: CameraPreviewWidget()),
+
+                // Наложение с прозрачностью
                 if (state.overlayImage != null)
                   Positioned(
-                    top: 20,
-                    left: 20,
-                    child: Image.file(state.overlayImage!),
+                    child: Opacity(
+                      opacity: 0.8, // Прозрачность 80%
+                      child: Image.file(state.overlayImage!, fit: BoxFit.cover),
+                    ),
                   ),
+
                 ControlButtons(
                   isRecording: state.isRecording,
                   onTakePicture: () {
